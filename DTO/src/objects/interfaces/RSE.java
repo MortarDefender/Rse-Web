@@ -1,4 +1,9 @@
-package objects;
+package objects.interfaces;
+
+import objects.dto.DealDTO;
+import objects.dto.StockDTO;
+import objects.dto.TransactionDTO;
+import objects.dto.UserDTO;
 
 import java.io.InputStream;
 import java.util.List;

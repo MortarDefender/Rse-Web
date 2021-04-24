@@ -1,13 +1,13 @@
 package com.RSE;
 
+import objects.dto.TransactionDTO;
 import com.sun.istack.internal.NotNull;
-import objects.TransactionDTO;
 
+import java.util.Date;
+import java.time.Instant;
+import java.time.Duration;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
 
 public class Transaction implements Serializable, Comparable<Transaction> {
     private final Instant timeStamp;
@@ -45,7 +45,7 @@ public class Transaction implements Serializable, Comparable<Transaction> {
 
     public Instant getTimeStamp() { return this.timeStamp; }
 
-    public TransactionDTO getDto() { return new TransactionDTO(getAction(), transactionFee, accountBalance, time, symbol); }
+    public TransactionDTO getDto() { return new TransactionDTO(getAction(), transactionFee, accountBalance, time, symbol, timeStamp.getNano()); }
 
     @Override
     public String toString() {

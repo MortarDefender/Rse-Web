@@ -1,10 +1,13 @@
-package objects;
+package objects.dto;
 
-import java.util.List;
+import objects.interfaces.Dto;
+import objects.interfaces.UserInter;
+
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
 
-public class UserDTO implements Dto {
+public class UserDTO implements Dto, UserInter {
     private final String username, type;  // stock broker || admin
     private final int account, revolution;
     private final Map<String, Integer> stocks;
@@ -19,17 +22,24 @@ public class UserDTO implements Dto {
         this.revolution = revolution;
     }
 
+    @Override
     public String getType() { return type; }
 
+    @Override
     public int getAccount() { return account; }
 
+    @Override
     public String getUsername() { return username; }
 
+    @Override
     public int getRevolution() { return revolution; }
 
+    @Override
     public Set<String> getStocksNames() {return stocks.keySet();}
 
+    @Override
     public List<TransactionDTO> getTransactions() { return transactions; }
 
+    @Override
     public int getStockQuantity(String stockName) { return stocks.get(stockName); }
 }

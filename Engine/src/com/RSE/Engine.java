@@ -6,17 +6,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.security.InvalidParameterException;
 
-import java.time.Instant;
 import java.util.*;
+import java.time.Instant;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import ExceptionsType.ExpType;
-import objects.*;
 import generated.*;
+import objects.dto.*;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import objects.interfaces.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+import ExceptionsType.ExpType;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -309,7 +310,7 @@ public class Engine implements Serializable, RSE {
 
     @Override
     public CommandAnswer<List<DealDTO>, String> LMT(String symbol, boolean action, int amount, int rate, String username) throws InvalidParameterException {
-        /* LIMIT command int objects.RSE */
+        /* LIMIT command int RSE */
         CommandAnswer<List<DealDTO>, String> ans = commandException(symbol, action, amount, username);
         if (ans.isSuccessful())
             return TradeCommand(Engine.Commands.LMT, symbol, action, amount, rate, this.users.get(username));
@@ -318,7 +319,7 @@ public class Engine implements Serializable, RSE {
 
     @Override
     public CommandAnswer<List<DealDTO>, String> MKT(String symbol, boolean action, int amount, String username) throws InvalidParameterException {
-        /* MARKET command in objects.RSE */
+        /* MARKET command in RSE */
         CommandAnswer<List<DealDTO>, String> ans = commandException(symbol, action, amount, username);
         if (ans.isSuccessful())
             return TradeCommand(Engine.Commands.MKT, symbol, action, amount, 0, this.users.get(username));
@@ -327,7 +328,7 @@ public class Engine implements Serializable, RSE {
 
     @Override
     public CommandAnswer<List<DealDTO>, String> FOK(String symbol, boolean action, int amount, int rate, String username) throws InvalidParameterException {
-        /* Fill Or Kill command in objects.RSE */
+        /* Fill Or Kill command in RSE */
         CommandAnswer<List<DealDTO>, String> ans = commandException(symbol, action, amount, username);
         if (ans.isSuccessful())
             return TradeCommand(Engine.Commands.FOK, symbol, action, amount, rate, this.users.get(username));
@@ -336,7 +337,7 @@ public class Engine implements Serializable, RSE {
 
     @Override
     public CommandAnswer<List<DealDTO>, String> IOC(String symbol, boolean action, int amount, int rate, String username) throws InvalidParameterException {
-        /* Immediate Or Cancel in objects.RSE */
+        /* Immediate Or Cancel in RSE */
         CommandAnswer<List<DealDTO>, String> ans = commandException(symbol, action, amount, username);
         if (ans.isSuccessful())
             return TradeCommand(Engine.Commands.IOC, symbol, action, amount, rate, this.users.get(username));
@@ -558,7 +559,7 @@ public class Engine implements Serializable, RSE {
                 }
             }
         }
-        throw new InvalidParameterException("There is no company with that name in objects.RSE");
+        throw new InvalidParameterException("There is no company with that name in objects.interfaces.RSE");
     }
 
     @Deprecated
@@ -578,7 +579,7 @@ public class Engine implements Serializable, RSE {
         /* return the information about the stock with the name provided */
         String res = "";
         if (!this.stocks.containsKey(name))
-            throw new InvalidParameterException("There is no company with that name in objects.RSE");
+            throw new InvalidParameterException("There is no company with that name in objects.interfaces.RSE");
         res = res.concat(this.stocks.get(name).toString() + "\nDeals:\n");
         ArrayList<Deal> allDeals = new ArrayList<>();
         for (String key : this.db.get(name).keySet())

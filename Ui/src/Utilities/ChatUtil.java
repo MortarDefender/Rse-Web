@@ -1,12 +1,9 @@
 package Utilities;
 
 import chat.ChatMessage;
-import chat.ChatRoom;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.web.Authentication;
 import com.web.ContextListener;
-import objects.StockDTO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Type;
 import java.util.*;
 
 @WebServlet(name = "ChatUtil", urlPatterns = "/chatUtil")

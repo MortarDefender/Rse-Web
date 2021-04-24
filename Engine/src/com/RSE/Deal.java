@@ -7,8 +7,8 @@ import java.time.Duration;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 
-import objects.DealDTO;
-import objects.UserDTO;
+import objects.dto.DealDTO;
+import objects.dto.UserDTO;
 import com.sun.istack.internal.NotNull;
 
 public class Deal  implements Serializable, Comparable<Deal> {
@@ -16,8 +16,8 @@ public class Deal  implements Serializable, Comparable<Deal> {
     private final boolean action;  // true == Buy || false == Sell
     private final User publisher;
     private int amount, revolution;
-    private final String symbol, time;
     private final Instant timeStamp;
+    private final String symbol, time;
 
     public Deal(String symbol, boolean action, int amount, int rate, User publisher) {
         this(symbol, action, amount, rate, publisher, new SimpleDateFormat("HH:mm:ss:SSS").format(new Date()), Instant.now());
@@ -45,7 +45,7 @@ public class Deal  implements Serializable, Comparable<Deal> {
     public Instant getTimeStamp() { return this.timeStamp; }
     public String getActionString() { return action ? "Buy" : "Sell"; }
     public UserDTO getPublisherDTO(Map<String, Stock> rseStocks) { return publisher.getDto(rseStocks); }
-    public DealDTO getDto(String status, Map<String, Stock> rseStocks) { return new DealDTO(symbol, getActionString(), amount, rate, revolution, getPublisherDTO(rseStocks), time, status); }
+    public DealDTO getDto(String status, Map<String, Stock> rseStocks) { return new DealDTO(symbol, getActionString(), amount, rate, revolution, getPublisherDTO(rseStocks), time, timeStamp.getNano(), status); }
 
     public void setAmount(int amount) {
         if (amount >= 0)

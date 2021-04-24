@@ -1,8 +1,8 @@
 package chat;
 
-import objects.Dto;
-import objects.AnswerDto;
-import objects.CommandAnswer;
+import objects.interfaces.Dto;
+import objects.dto.AnswerDto;
+import objects.interfaces.CommandAnswer;
 import ExceptionsType.ExpType;
 import com.web.ContextListener;
 

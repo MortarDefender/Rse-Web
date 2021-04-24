@@ -1,4 +1,4 @@
-package objects;
+package objects.interfaces;
 
 import ExceptionsType.ExpType;
 

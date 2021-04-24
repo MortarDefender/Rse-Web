@@ -1,9 +1,9 @@
-package objects;
+package objects.dto;
 
 import ExceptionsType.ExpType;
+import objects.interfaces.CommandAnswer;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 /**

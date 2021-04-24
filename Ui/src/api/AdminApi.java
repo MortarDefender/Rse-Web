@@ -3,7 +3,7 @@ package api;
 import com.google.gson.Gson;
 import com.web.Authentication;
 import com.web.ContextListener;
-import objects.DealDTO;
+import objects.dto.DealDTO;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

@@ -1,7 +1,7 @@
 package com.RSE;
 
-import objects.UserDTO;
-import objects.TransactionDTO;
+import objects.dto.UserDTO;
+import objects.dto.TransactionDTO;
 
 import java.time.Instant;
 import java.util.*;

@@ -1,6 +1,6 @@
 package com.RSE;
 
-import objects.StockDTO;
+import objects.dto.StockDTO;
 
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,9 +27,9 @@ public class Stock  implements Serializable {
     public int getRate() { return this.rate.get(); }
     public String getSymbol() { return this.symbol; }
     public int getQuantity() { return this.quantity.get(); }
+    public String getCompanyName() { return this.companyName; }
     public int getTotalDeals() { return this.totalDeals.get(); }
     public int getRevolution() { return this.revolution.get(); }
-    public String getCompanyName() { return this.companyName; }
     public StockDTO getDto() { return new StockDTO(companyName, symbol, rate.get(), quantity.get(), totalDeals.get(), revolution.get()); }
     public StockDTO getDto(int quantity) { return new StockDTO(companyName, symbol, rate.get(), quantity, totalDeals.get(), revolution.get()); }
 

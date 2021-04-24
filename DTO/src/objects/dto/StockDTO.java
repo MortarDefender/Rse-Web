@@ -1,6 +1,9 @@
-package objects;
+package objects.dto;
 
-public class StockDTO implements Dto {
+import objects.interfaces.Dto;
+import objects.interfaces.StockInter;
+
+public class StockDTO implements Dto, StockInter {
     private final String companyName, symbol;
     private final int rate, totalDeals, revolution, quantity;
 
@@ -13,15 +16,21 @@ public class StockDTO implements Dto {
         this.symbol = symbol.toUpperCase();
     }
 
+    @Override
     public int getRate() { return rate; }
 
+    @Override
     public String getSymbol() { return symbol; }
 
+    @Override
     public int getQuantity() { return quantity; }
 
+    @Override
     public int getTotalDeals() { return totalDeals; }
 
+    @Override
     public int getRevolution() { return revolution; }
 
+    @Override
     public String getCompanyName() { return companyName; }
 }

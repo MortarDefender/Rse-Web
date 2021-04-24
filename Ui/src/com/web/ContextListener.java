@@ -2,7 +2,7 @@ package com.web;
 
 import chat.ChatManager;
 import Utilities.UserManager;
-import objects.RSE;
+import objects.interfaces.RSE;
 import com.RSE.Engine;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
