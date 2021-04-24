@@ -9,6 +9,7 @@ public class UserManager {  // Singleton of UserManager
     private UserManager() { activeUsers = new HashMap<>(); }
 
     public static UserManager getManager() {
+        /* as a Singleton there is only one instance. return the instance of this class */
         if (manager == null)
             manager = new UserManager();
         return manager;

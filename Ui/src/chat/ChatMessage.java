@@ -1,7 +1,7 @@
 package chat;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class ChatMessage {
     private final String username, message, time;

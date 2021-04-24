@@ -1,10 +1,10 @@
 package chat;
 
-import objects.interfaces.Dto;
 import objects.dto.AnswerDto;
-import objects.interfaces.CommandAnswer;
 import ExceptionsType.ExpType;
+import objects.interfaces.Dto;
 import com.web.ContextListener;
+import objects.interfaces.CommandAnswer;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -16,12 +16,14 @@ public class ChatManager {   // Singleton of UserManager
     private ChatManager() { chat = new HashMap<>(); }
 
     public static ChatManager getManager() {
+        /* as a Singleton there is only one instance. return the instance of this class */
         if (manager == null)
             manager = new ChatManager();
         return manager;
     }
 
     public Set<String> getRooms(String username) {
+        /* return a set of names of the active rooms */
         Set<String> rooms = new HashSet<>();
         this.chat.values().forEach(r -> {
             if (r.checkParticipant(username))
@@ -33,6 +35,9 @@ public class ChatManager {   // Singleton of UserManager
     // public ChatRoom getChat(String chatName) { }
 
     public List<ChatMessage> getChatMessages(String chatName, String username, boolean action, int messageAmount) {
+        /* return the chat message of the room given, if action true than change all username with the user to session,
+        *  otherwise filter the user messages out of the messages. return the subList from messageAmount till the end,
+        * if the chatRoom does not exists than return null */
         if (!this.chat.containsKey(chatName) || messageAmount < 0)
             return null;
         List<ChatMessage> chat = this.chat.get(chatName).getMessages();
@@ -43,6 +48,8 @@ public class ChatManager {   // Singleton of UserManager
     }
 
     public List<ChatMessage> getChatMessages(String chatName, String username, boolean action) {
+        /* return the chat message of the room given, if action true than change all username with the user to session,
+         *  otherwise filter the user messages out of the messages, if the chatRoom does not exists than return null */
         if (!this.chat.containsKey(chatName))
             return null;
         List<ChatMessage> chat = this.chat.get(chatName).getMessages();
@@ -52,14 +59,16 @@ public class ChatManager {   // Singleton of UserManager
     }
 
     public List<ChatMessage> getChatMessages(String chatName) {
+        /* return the messages from the chatRoom given as is, if the chatRoom does not exists than return null */
         if (!this.chat.containsKey(chatName))
             return null;
         return Collections.unmodifiableList(chat.get(chatName).getMessages());
     }
 
-    public boolean chatCheck(String chatName) { return this.chat.containsKey(chatName); }
+    public boolean chatCheck(String chatName) { return this.chat.containsKey(chatName); }  /* return true if the room with the name given exists false otherwise */
 
     public CommandAnswer<Dto, String> addNewChat(String chatName, Set<String> participants) {
+        /* add new chat with the given name and the set of participants, return a CommandAnswer if there is an exception */
         if (this.chat.containsKey(chatName))
             return new AnswerDto<>(null, "There is a chat with room with the name " + chatName + " already in the system", ExpType.ChatNameDuplication);
         List<String> names = new ArrayList<>();
@@ -77,6 +86,7 @@ public class ChatManager {   // Singleton of UserManager
     }
 
     public CommandAnswer<Dto, String> addToExistingChat(String chatName, String username, String message) {
+        /* add new message to an existing room, return CommandAnswer if there is an exception */
         if (!this.chat.containsKey(chatName))
             return new AnswerDto<>(null, "There is no chat room with the name " + chatName, ExpType.ChatNotFound);
         if (!ContextListener.um.checkUser(username))
@@ -92,6 +102,7 @@ public class ChatManager {   // Singleton of UserManager
     }
 
     public void removeUserFromAllChats(String username) {
+        /* remove a user from all the chats */
         this.chat.values().forEach(room -> room.removeParticipant(username));
     }
 
@@ -105,12 +116,14 @@ public class ChatManager {   // Singleton of UserManager
     private void removeMessage(String chatName, String time) { this.chat.get(chatName).removeChatMessage(time); }
 
     private List<ChatMessage> filter(List<ChatMessage> chat, String username) {
+        /* filter all chat messages from username and return the list */
         List<ChatMessage> new_chat = new ArrayList<>();
         chat.stream().filter(message -> !message.getUsername().equals(username)).forEach(new_chat::add);
         return new_chat;
     }
 
     private List<ChatMessage> substitute(List<ChatMessage> chat, String username) {
+        /* replace all chat messages from username into a chat messages from session and return the list */
         List<ChatMessage> new_chat = new ArrayList<>();
         chat.forEach(message -> {
             if (message.getUsername().equals(username))
