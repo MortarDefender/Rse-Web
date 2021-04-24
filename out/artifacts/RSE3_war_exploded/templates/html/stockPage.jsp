@@ -50,7 +50,8 @@
                 (async () => {
                     const { value: formValues } = await Swal.fire({
                         title: '<strong style="color: white; text-decoration: underline;">Trade Stock:</strong>',
-                        background: "url(https://images.unsplash.com/photo-1544679565-73c513036b97?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80) center, center",
+                        // background: "url(https://images.unsplash.com/photo-1544679565-73c513036b97?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80) center, center",
+                        background: "url(../css/pineLives.jpg) center, center",
                         html:
                             '<label style="color: white;"> Action:</label><select id="swal-input1" name="rank" class="swal2-input" style="color: white;"><option value="true" style="color: black;">Buy</option><option value="false" style="color: black;">Sell</option></select>' +
                             '<label style="color: white;"> Command:</label><select id="swal-input2" name="rank" class="swal2-input" style="color: white;"><option value="lmt" style="color: black;">Limit</option><option value="mkt" style="color: black;">Market</option>' +

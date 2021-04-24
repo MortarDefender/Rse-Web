@@ -32,6 +32,16 @@ public class ChatManager {   // Singleton of UserManager
 
     // public ChatRoom getChat(String chatName) { }
 
+    public List<ChatMessage> getChatMessages(String chatName, String username, boolean action, int messageAmount) {
+        if (!this.chat.containsKey(chatName) || messageAmount < 0)
+            return null;
+        List<ChatMessage> chat = this.chat.get(chatName).getMessages();
+        if (action)
+            return Collections.unmodifiableList(substitute(chat, username).subList(messageAmount, chat.size()));
+        List<ChatMessage> filteredChat = filter(chat, username);
+        return Collections.unmodifiableList(filteredChat.subList(messageAmount, filteredChat.size()));
+    }
+
     public List<ChatMessage> getChatMessages(String chatName, String username, boolean action) {
         if (!this.chat.containsKey(chatName))
             return null;
@@ -102,12 +112,12 @@ public class ChatManager {   // Singleton of UserManager
 
     private List<ChatMessage> substitute(List<ChatMessage> chat, String username) {
         List<ChatMessage> new_chat = new ArrayList<>();
-        for(ChatMessage message: chat) {
+        chat.forEach(message -> {
             if (message.getUsername().equals(username))
                 new_chat.add(new ChatMessage("session", message.getMessage(), message.getTime()));
             else
                 new_chat.add(message);
-        }
+        });
         return new_chat;
     }
 }

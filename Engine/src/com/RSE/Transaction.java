@@ -78,6 +78,7 @@ public class Transaction implements Serializable, TransactionInter {  // Compara
 
     @Override
     public int compareTo(@NotNull TransactionInter o) {
+        /* compare this object with another TransactionInter object */
         if (Duration.between(timeStamp, o.getTimeStamp()).getNano() < 0)
             return -1;
         return 1;

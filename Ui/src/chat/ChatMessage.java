@@ -9,6 +9,7 @@ public class ChatMessage {
     public ChatMessage(String username, String message) {
         this(username, message, new SimpleDateFormat("HH:mm:ss:SSS").format(new Date()));
     }
+
     public ChatMessage(String username, String message, String time) {
         this.time = time;
         this.message = message;

@@ -196,7 +196,7 @@ function addChat() {
     Swal.fire({
         title: '<span style="color: white; text-decoration: underline; font-weight: bold;"> Select Users: </span>',
         width: 400,
-        background: "url(https://images.unsplash.com/photo-1540144965158-050c0b7769ed?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1951&q=80) center, center",
+        background: "url(https://images.unsplash.com/photo-1540144965158-050c0b7769ed?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1951&q=80) center, center",  // greenGreyForest.jpg
         html: '<label style="color: white; font-size: 30px; text-decoration: underline;"> chat name:</label><br>' +
             '<input type="text" id="chatName" name="chat_name" style="color: white; font-size: 25px;" class="swal2-input" required><br>' + CheckBoxUsers,
         showConfirmButton: true,

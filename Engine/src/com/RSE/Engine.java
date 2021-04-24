@@ -131,7 +131,7 @@ public class Engine implements Serializable, RSE {
             return new AnswerDto<>(null, "There is no stock with the symbol " + symbol, ExpType.StockNotFound);
         // throw new InvalidParameterException("There is no stock with the symbol " + symbol);
         // return this.stocks.get(symbol).getDto();
-        return new AnswerDto<>(this.stocks.get(symbol).getDto(), null, ExpType.Successful);
+        return new AnswerDto<>(this.stocks.get(symbol).getDto(), null);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class Engine implements Serializable, RSE {
         if (!this.stocks.containsKey(symbol))  // StockNotFound
             return new AnswerDto<>(null, "There is no stock with the symbol " + symbol, ExpType.StockNotFound);
         // throw new InvalidParameterException("There is no stock with the symbol " + symbol);
-        return new AnswerDto<>(this.users.get(username).getStockQuantity(symbol), null, ExpType.Successful);
+        return new AnswerDto<>(this.users.get(username).getStockQuantity(symbol), null);
         // return this.users.get(username).getStockQuantity(symbol);
     }
 
@@ -174,7 +174,7 @@ public class Engine implements Serializable, RSE {
         // throw new InvalidParameterException("There is no stock with the symbol " + symbol);
         List<DealDTO> l = new ArrayList<>();
         this.db.get(symbol).get("Approved").forEach(deal -> l.add(deal.getDto("Approved", this.stocks)));
-        return new AnswerDto<>(l, null, ExpType.Successful);
+        return new AnswerDto<>(l, null);
         // return l;
     }
 
@@ -205,7 +205,7 @@ public class Engine implements Serializable, RSE {
         if (!this.users.containsKey(username))  // UserNotFound
             return new AnswerDto<>(null, "There is no user with the name: " + username, ExpType.UserNotFound);
         // throw new InvalidParameterException("There is no user with the name: " + username);
-        return new AnswerDto<>(this.users.get(username).getTransactionsDTO(), null, ExpType.Successful);
+        return new AnswerDto<>(this.users.get(username).getTransactionsDTO(), null);
         // return this.users.get(username).getTransactionsDTO();
     }
 
@@ -213,7 +213,7 @@ public class Engine implements Serializable, RSE {
     public CommandAnswer<Integer, String> getRate(String symbol) {
         /* return the rate of a given stock */
         if (this.stocks.containsKey(symbol))
-            return new AnswerDto<>(this.stocks.get(symbol).getRate(), null, ExpType.Successful);
+            return new AnswerDto<>(this.stocks.get(symbol).getRate(), null);
         // return this.stocks.get(symbol).getRate();
         // throw new InvalidParameterException("There is no stock with the symbol: " + symbol);  // StockNotFound
         return  new AnswerDto<>(null, "There is no stock with the symbol: " + symbol, ExpType.StockNotFound);
@@ -233,7 +233,7 @@ public class Engine implements Serializable, RSE {
         if (!this.users.containsKey(username))  // UserNotFound
             return new AnswerDto<>(null, "There is no user with the username: " + username, ExpType.UserNotFound);
         // throw new InvalidParameterException("There is no user with the username: " + username);
-        return new AnswerDto<>(this.users.get(username).getDto(this.stocks), null, ExpType.Successful);
+        return new AnswerDto<>(this.users.get(username).getDto(this.stocks), null);
         // return this.users.get(username).getDto(this.stocks);
     }
 
@@ -243,7 +243,7 @@ public class Engine implements Serializable, RSE {
         if (!this.users.containsKey(username))  // UserNotFound
             return new AnswerDto<>(null, "There is no user with the username: " + username, ExpType.UserNotFound);
         // throw new InvalidParameterException("There is no user with the username: " + username);
-        return new AnswerDto<>(this.users.get(username).getTotalRevolution(this.stocks), null, ExpType.Successful);
+        return new AnswerDto<>(this.users.get(username).getTotalRevolution(this.stocks), null);
         // return this.users.get(username).getTotalRevolution(this.stocks);
     }
 
@@ -264,18 +264,19 @@ public class Engine implements Serializable, RSE {
 
         graph.put("xAxis", xAxis);
         graph.put("yAxis", yAxis);
-        return new AnswerDto<>(graph, null, ExpType.Successful);
+        return new AnswerDto<>(graph, null);
         // return graph;
     }
 
     @Override
     public CommandAnswer<Map<String, Integer>, String> apiGraph(String stockName) {
+        /* return a Map of type String to Integer which can be used to construct  a graph, the function a CommandAnswer with that type as the dto object  */
         Map<String, Integer> graph = new HashMap<>();
         if (!this.stocks.containsKey(stockName))  // StockNotFound
             return new AnswerDto<>(null, "There is no stock named '" + stockName + "' in the system", ExpType.StockNotFound);
         // throw new InvalidParameterException("There is no stock named '" + stockName + "' in the system");
         this.db.get(stockName).get("Approved").forEach(deal -> graph.put(deal.getTime(), deal.getRate()));
-        return new AnswerDto<>(graph, null, ExpType.Successful);
+        return new AnswerDto<>(graph, null);
         // return graph;
     }
 
@@ -289,7 +290,7 @@ public class Engine implements Serializable, RSE {
         String status = listName.equals("Approved") ? "Approved" : "Pending";
         ArrayList<DealDTO> res = new ArrayList<>();
         this.db.get(stockName).get(listName).forEach(deal -> res.add(deal.getDto(status, this.stocks)));
-        return new AnswerDto<>(res, "", ExpType.Successful);
+        return new AnswerDto<>(res, "");
         // return res;
     }
 
@@ -312,7 +313,7 @@ public class Engine implements Serializable, RSE {
     }
 
     @Override
-    public CommandAnswer<List<DealDTO>, String> LMT(String symbol, boolean action, int amount, int rate, String username) throws InvalidParameterException {
+    public CommandAnswer<List<DealDTO>, String> LMT(String symbol, boolean action, int amount, int rate, String username) {
         /* LIMIT command int RSE */
         CommandAnswer<List<DealDTO>, String> ans = commandException(symbol, action, amount, username);
         if (ans.isSuccessful())
@@ -321,7 +322,7 @@ public class Engine implements Serializable, RSE {
     }
 
     @Override
-    public CommandAnswer<List<DealDTO>, String> MKT(String symbol, boolean action, int amount, String username) throws InvalidParameterException {
+    public CommandAnswer<List<DealDTO>, String> MKT(String symbol, boolean action, int amount, String username) {
         /* MARKET command in RSE */
         CommandAnswer<List<DealDTO>, String> ans = commandException(symbol, action, amount, username);
         if (ans.isSuccessful())
@@ -330,7 +331,7 @@ public class Engine implements Serializable, RSE {
     }
 
     @Override
-    public CommandAnswer<List<DealDTO>, String> FOK(String symbol, boolean action, int amount, int rate, String username) throws InvalidParameterException {
+    public CommandAnswer<List<DealDTO>, String> FOK(String symbol, boolean action, int amount, int rate, String username) {
         /* Fill Or Kill command in RSE */
         CommandAnswer<List<DealDTO>, String> ans = commandException(symbol, action, amount, username);
         if (ans.isSuccessful())
@@ -339,7 +340,7 @@ public class Engine implements Serializable, RSE {
     }
 
     @Override
-    public CommandAnswer<List<DealDTO>, String> IOC(String symbol, boolean action, int amount, int rate, String username) throws InvalidParameterException {
+    public CommandAnswer<List<DealDTO>, String> IOC(String symbol, boolean action, int amount, int rate, String username) {
         /* Immediate Or Cancel in RSE */
         CommandAnswer<List<DealDTO>, String> ans = commandException(symbol, action, amount, username);
         if (ans.isSuccessful())
@@ -348,6 +349,7 @@ public class Engine implements Serializable, RSE {
     }
 
     private Optional<RizpaStockExchangeDescriptor> rseDeserializeFrom(InputStream in) throws JAXBException {
+        /* return an optional RizpaStockExchangeDescriptor from the inputStream given */
         JAXBContext jc = JAXBContext.newInstance(JAXB_XML_GAME_PACKAGE_NAME);
         Unmarshaller u = jc.createUnmarshaller();
         return Optional.ofNullable(((RizpaStockExchangeDescriptor) u.unmarshal(in)));
@@ -385,7 +387,7 @@ public class Engine implements Serializable, RSE {
             newStocks.put(item.getRseSymbol(), new Stock(item.getRseCompanyName(), item.getRseSymbol(), item.getRsePrice(), 0));
             newStocksNames.put(item.getRseCompanyName(), item.getRseSymbol());
         }
-        return new AnswerDto<>(newStocks, null, ExpType.Successful);
+        return new AnswerDto<>(newStocks, null);
         // return newStocks;
     }
 
@@ -472,6 +474,7 @@ public class Engine implements Serializable, RSE {
     }
 
     private CommandAnswer<Dto, String> addAllUserHoldings(List<RseItem> holdings, String username, boolean flag) {
+        /* adds all the user holding from the holding list given, return CommandAnswer to indicate exception */
         Map<String, Integer> allStocksHolding = new HashMap<>();
         for (RseItem item : holdings) {
             if (item.getQuantity() <= 0)  // XMLUserHoldingQuantityNotPositive
@@ -479,15 +482,14 @@ public class Engine implements Serializable, RSE {
             // throw new InvalidParameterException("The stock '" + item.getSymbol() + "' has a quantity of " + item.getQuantity() + ". the quantity of a stock is a positive number");
             allStocksHolding.put(item.getSymbol(), item.getQuantity());
         }
-        this.users.get(username).addAllStocks(allStocksHolding, flag);
-        return new AnswerDto<>();
+        return this.users.get(username).addAllStocks(allStocksHolding, flag);
     }
 
-    private void addAllUserHoldings(Map<String, Integer> holdings, String username, boolean flag) {
+    private CommandAnswer<Dto, String> addAllUserHoldings(Map<String, Integer> holdings, String username, boolean flag) {
         /* append thee holdings to the user with the given username */
         Map<String, Integer> allStocksHolding = new HashMap<>();
         holdings.keySet().forEach(symbol -> allStocksHolding.put(symbol, holdings.get(symbol)));
-        this.users.get(username).addAllStocks(allStocksHolding, flag);
+        return this.users.get(username).addAllStocks(allStocksHolding, flag);
     }
 
     private void updateStockQuantity() {
@@ -509,7 +511,7 @@ public class Engine implements Serializable, RSE {
     private void addStockQuantity(String stockName, int quantity) {
         /* increase or decrease the stock quantity with the given amount and symbol */
         if (!this.stocks.containsKey(stockName))  // StockNotFound
-            throw new InvalidParameterException("stock " + stockName + " is not in the system. db error");  // bug in db
+            throw new InvalidParameterException("stock " + stockName + " is not in the system. db error");  // bug in db // stay for debug reasons
         this.stocks.get(stockName).addQuantity(quantity);
     }
 
@@ -642,7 +644,7 @@ public class Engine implements Serializable, RSE {
         this.stocks.get(symbol).setRate(new_deal.getRate());
     }
 
-    private CommandAnswer<List<DealDTO>, String> TradeCommand(Commands cm, String symbol, boolean action, int amount, int rate, UserInter user)  throws InvalidParameterException {
+    private CommandAnswer<List<DealDTO>, String> TradeCommand(Commands cm, String symbol, boolean action, int amount, int rate, UserInter user) {
         /* activate the command according to cm with the given data */
         // if (this.stocks.get(symbol).getQuantity() < amount) // CommandUserBuyOverQuantity
         //     return new AnswerDto<>(null, username + " can not buy more stock than the quantity of the company", ExpType.CommandUserBuyOverQuantity);
@@ -685,7 +687,7 @@ public class Engine implements Serializable, RSE {
                     this.stocks.get(symbol).set(stock_temp);
                     result.clear();
                     result.add(dealOrg);
-                    return new AnswerDto<>(result, null, ExpType.Successful);
+                    return new AnswerDto<>(result, null);
                     // return result;  // "The deal has been canceled"
                 }
                 else {
@@ -699,7 +701,7 @@ public class Engine implements Serializable, RSE {
                 }
             }
         }
-        return new AnswerDto<>(result, null, ExpType.Successful);
+        return new AnswerDto<>(result, null);
         // return result; //  "The deal has been approved
     }
 }

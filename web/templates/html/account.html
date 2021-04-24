@@ -24,7 +24,8 @@
                 (async () => {
                     const { value: formValues } = await Swal.fire({
                         title: '<strong style="color: white; text-decoration: underline;">Add New Stock:</strong>',
-                        background: "url(https://images.unsplash.com/photo-1565061326832-cd738486b695?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80) center, center",
+                        // background: "url(https://images.unsplash.com/photo-1565061326832-cd738486b695?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80) center, center",
+                        background: "url(../css/pines.jpg) center, center",
                         html:
                             '<label style="color: white;"> Company Name:</label><input type="text" id="swal-input1" name="companyName" class="swal2-input" style="color: white;" required>' +
                             '<label style="color: white;"> Stock Symbol:</label><input type="text" id="swal-input2" name="symbol" style="color: white;" class="swal2-input" required>' +
@@ -80,7 +81,8 @@
                 (async () => {
                     const { value: formValues } = await Swal.fire({
                         title: '<strong style="color: white; text-decoration: underline;">Add New Credit Charge:</strong>',
-                        background: "url(https://images.unsplash.com/photo-1574322663382-d78bf98abd36?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80) center, center",
+                        // background: "url(https://images.unsplash.com/photo-1574322663382-d78bf98abd36?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80) center, center",  // greenOrangeForest
+                        background: "url(../css/greenOrangeForest.jpg) center, center",  // greenOrangeForest
                         html:
                             '<label style="color: white;"> Amount:</label><br><input type="number" id="swal-input1" name="companyName" class="swal2-input" style="color: white; min-width: 100%;" required>',
                         focusConfirm: false,
@@ -128,7 +130,8 @@
                 (async () => {
                     const { value: formValues } = await Swal.fire({
                         title: '<strong style="color: white; text-decoration: underline;">Upload an XML file:</strong>',
-                        background: "url(https://images.unsplash.com/photo-1544679565-73c513036b97?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80) center, center",
+                        // background: "url(https://images.unsplash.com/photo-1544679565-73c513036b97?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=934&q=80) center, center", // pineLeaves
+                        background: "url(../css/pineLives.jpg) center, center",
                         html:
                             '<form action="/fileUpload" enctype="multipart/form-data" method="POST">' +
                             '<div style="display: flex; margin-bottom: 15px;"><i class="fa fa-file-text-o icon" style="font-size:30px;"></i>' +

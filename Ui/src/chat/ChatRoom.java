@@ -20,11 +20,11 @@ public class ChatRoom {
 
     public List<ChatMessage> getMessages() { return this.messages; }
 
+    public void addParticipant(String username) { this.participants.add(username); }
+
     public Set<String> getParticipants() { return Collections.unmodifiableSet(this.participants); }
 
     public boolean checkParticipant(String username) { return this.participants.contains(username); }
-
-    public void addParticipant(String username) { this.participants.add(username); }
 
     public void addMessage(String username, String message) { this.messages.add(new ChatMessage(username, message)); }
 

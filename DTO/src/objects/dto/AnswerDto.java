@@ -31,20 +31,20 @@ public class AnswerDto<T, S> implements CommandAnswer<T, S> {  // extends Dto
     }
 
     @Override
-    public ExpType getType() { return this.type; }
+    public ExpType getType() { return this.type; }  /* return the type of exception, if there is no exception Successful will be returned */
 
     @Override
-    public T getObject() { return this.dtoObj; }
+    public T getObject() { return this.dtoObj; }    /* return the dto object, if there is an exception null will be returned */
 
     @Override
-    public S getExpMessage() { return this.expObj; }
+    public S getExpMessage() { return this.expObj; }  /* return the exception object if there is no exception null will be returned */
 
     @Override
-    public boolean isSuccessful() { return this.type == ExpType.Successful; }
-
+    public boolean isSuccessful() { return this.type == ExpType.Successful; } /* return if there is an exception */
 
     @Override
     public T ifSuccessful(UnaryOperator<T> operator) {
+        /* if the action is Successful, without exception, than do the UnaryOperator given, otherwise return null */
         if (this.type == ExpType.Successful)
             return operator.apply(dtoObj);
         return null;
@@ -52,6 +52,7 @@ public class AnswerDto<T, S> implements CommandAnswer<T, S> {  // extends Dto
 
     @Override
     public void isPresent(Consumer<? super T> consumer) {
+        /* if the action is Successful, without exception, than do the Consumer given  */
         if (this.type == ExpType.Successful) {
             if (dtoObj != null)  // needed ??
                 consumer.accept(dtoObj);
@@ -60,6 +61,7 @@ public class AnswerDto<T, S> implements CommandAnswer<T, S> {  // extends Dto
 
     @Override
     public void ifFailure(Consumer<? super S> consumer) {
+        /* if the action has failed, has exception than do the Consumer given  */
         if (this.type != ExpType.Successful) {
             if (expObj != null)  // needed ??
                 consumer.accept(expObj);
@@ -68,6 +70,7 @@ public class AnswerDto<T, S> implements CommandAnswer<T, S> {  // extends Dto
 
     @Override
     public void doAction(Consumer<? super T> objConsumer, Consumer<? super S> expConsumer) {
+        /* if the action succeed than call objConsumer otherwise the action has failed and call expConsumer */
         if (this.type == ExpType.Successful)
             objConsumer.accept(dtoObj);
         else

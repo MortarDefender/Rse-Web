@@ -112,6 +112,7 @@ public class Deal implements Serializable, DealInter { // Comparable<Deal>
 
     @Override
     public int compareTo(@NotNull DealInter other) {
+        /* compare this object with another DealInter object */
         if ((action && rate < other.getRate()) || (!action && rate > other.getRate()))
             return 1;
         else {
