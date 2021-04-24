@@ -21,11 +21,17 @@ public class StockPage extends HttpServlet {
             response.setStatus(403);
             response.sendRedirect("/templates/html/Errors/403_error.html");
         }
-        request.setAttribute("symbol", symbol);
-        if (ContextListener.rse.getUser(username).getObject().getType().equals("Admin"))
-            response.sendRedirect("templates/html/adminPage.jsp?symbol=" + symbol);
-        else
-            response.sendRedirect("templates/html/stockPage.jsp?symbol=" + symbol);
+        if (!ContextListener.rse.checkStock(symbol)) {
+            response.setStatus(404);
+            response.sendRedirect("/templates/html/Errors/404_error_user.html");
+        }
+        else {
+            request.setAttribute("symbol", symbol);
+            if (ContextListener.rse.getUser(username).getObject().getType().equals("Admin"))
+                response.sendRedirect("templates/html/adminPage.jsp?symbol=" + symbol);
+            else
+                response.sendRedirect("templates/html/stockPage.jsp?symbol=" + symbol);
+        }
     }
 
     @Override

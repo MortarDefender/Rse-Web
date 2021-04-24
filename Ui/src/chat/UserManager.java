@@ -1,4 +1,4 @@
-package Utilities;
+package chat;
 
 import java.util.*;
 
