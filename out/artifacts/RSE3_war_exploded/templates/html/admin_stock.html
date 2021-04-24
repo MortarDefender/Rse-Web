@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>stocks</title>
+        <meta content="stocks" property="og:title"/>
+        <meta content="stocks" property="twitter:title"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+        <link href="../css/admin.css" rel="stylesheet" type="text/css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+        <link href="prov.png" rel="shortcut icon" type="image/x-icon"/>
+        <link href="prov.png" rel="apple-touch-icon"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="../js/loader.js"></script>
+        <script>
+            $(document).ready(function() {
+                // ;  // set time
+                // setInterval(setAdminStockPage("<% stock symbol %>"), 2000);
+                startAdvChart();
+            });
+        </script>
+    </head>
+    <body class="body-2">
+        <div>
+            <nav role="navigation">
+                <div id="menuToggle">
+                    <input type="checkbox" />
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <ul id="menu">
+                        <a href="/"><li><i class="fa fa-home" aria-hidden="true" style="font-size:24px;"></i>  Home</li></a>
+                        <a href="/stocks"><li><i class="fa fa-list" aria-hidden="true" style="font-size:24px;"></i>  Stocks</li></a>
+                        <a href="/account"><li><i class="fa fa-credit-card-alt" aria-hidden="true" style="font-size:24px;"></i>  Account</li></a>
+                        <a href="/users"><li><i class="fa fa-users" style="font-size:24px;"></i>  Users</li></a>
+                        <a href="/settings"><li><i class="fa fa-cog" aria-hidden="true" style="font-size:24px;"></i>  Settings</li></a>
+                        <a href="/logout"><li><i class="fa fa-sign-out" aria-hidden="true" style="font-size:24px;"></i>  Logout</li></a>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="table-title">
+            <h1>Admin Stock Page:</h1>
+        </div>
+        <!--<div id="chart"></div>-->
+        <div class="stock-info">
+            <table>
+                <tr>
+                    <th class="table-row">Company Name:</th>
+                    <td class="table-row" id="companyName">Tesla</td>
+                </tr>
+                <tr>
+                    <th class="table-row">Stock Symbol:</th>
+                    <td class="table-row" id="symbol">TS</td>
+                </tr>
+                <tr>
+                    <th class="table-row">Rate Per Share:</th>
+                    <td class="table-row" id="rate">120</td>
+                </tr>
+                <tr>
+                    <th class="table-row">Revolution:</th>
+                    <td class="table-row" id="revolution">500</td>
+                </tr>
+            </table>
+            <div id="wrapper">
+                <div id="chart-area"></div>
+                <div id="chart-bar"></div>
+            </div>
+        </div>
+        <h2 style="color: white; text-decoration: underline; padding-left: 10%; padding-top: 2%;">Stock Deals:</h2>
+        <table class="table-fill">
+            <thead>
+            <tr>
+                <th class="text-left" style="width: 33%;">Time</th>
+                <th class="text-left" style="width: 33%;">Quantity</th>
+                <th class="text-left">Rate Per Share</th>
+            </tr>
+            </thead>
+            <tbody class="table-hover" id="deals-tbody-main">
+            <tr>
+                <td class="text-left">10:11:125</td>
+                <td class="text-left">10</td>
+                <td class="text-left">500</td>
+            </tr>
+            <tr>
+                <td class="text-left">11:12:123</td>
+                <td class="text-left">50</td>
+                <td class="text-left">100</td>
+            </tr>
+            <tr>
+                <td class="text-left">13:25:145</td>
+                <td class="text-left">100</td>
+                <td class="text-left">700</td>
+            </tr>
+            <tr>
+                <td class="text-left">17:45:225</td>
+                <td class="text-left">25</td>
+                <td class="text-left">700</td>
+            </tr>
+            <tr>
+                <td class="text-left">20:15:455</td>
+                <td class="text-left">10</td>
+                <td class="text-left">400</td>
+            </tr>
+            <tr>
+                <td class="text-left">22:32:335</td>
+                <td class="text-left">15</td>
+                <td class="text-left">500</td>
+            </tr>
+            <tr>
+                <td class="text-left">23:59:555</td>
+                <td class="text-left">10</td>
+                <td class="text-left">800</td>
+            </tr>
+            </tbody>
+        </table>
+        <h2 style="color: white; text-decoration: underline; padding-left: 10%; padding-top: 2%;">Buy Table:</h2>
+        <table class="table-fill">
+            <thead>
+            <tr>
+                <th class="text-left">Time</th>
+                <th class="text-left">Deal Type</th>
+                <th class="text-left">Stock Amount</th>
+                <th class="text-left">Stock Rate</th>
+                <th class="text-left">Stock Symbol</th>
+            </tr>
+            </thead>
+            <tbody class="table-hover" id="buy-tbody-main">
+                <tr onclick="trade_stock('GOOGL')">
+                    <td class="text-left">Google</td>
+                    <td class="text-left">GOOGL</td>
+                    <td class="text-left">125</td>
+                    <td class="text-left">500</td>
+                    <td class="text-left">500</td>
+                </tr>
+                <tr onclick="trade_stock('TS')">
+                    <td class="text-left">Tesla</td>
+                    <td class="text-left">TS</td>
+                    <td class="text-left">550</td>
+                    <td class="text-left">1100</td>
+                    <td class="text-left">1100</td>
+                </tr>
+                <tr onclick="trade_stock('MSFT')">
+                    <td class="text-left">Microsoft</td>
+                    <td class="text-left">MSFT</td>
+                    <td class="text-left">100</td>
+                    <td class="text-left">700</td>
+                    <td class="text-left">700</td>
+                </tr>
+                <tr  onclick="trade_stock('AZ')">
+                    <td class="text-left">Amazon</td>
+                    <td class="text-left">AZ</td>
+                    <td class="text-left">225</td>
+                    <td class="text-left">7000</td>
+                    <td class="text-left">7000</td>
+                </tr>
+                <tr onclick="trade_stock('BMTH')">
+                    <td class="text-left">Horizens</td>
+                    <td class="text-left">BMTH</td>
+                    <td class="text-left">100</td>
+                    <td class="text-left">400</td>
+                    <td class="text-left">400</td>
+                </tr>
+                <tr onclick="trade_stock('ZM')">
+                    <td class="text-left">Zoom</td>
+                    <td class="text-left">ZM</td>
+                    <td class="text-left">175</td>
+                    <td class="text-left">500</td>
+                    <td class="text-left">500</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 style="color: white; text-decoration: underline; padding-left: 10%; padding-top: 2%;">Sell Table:</h2>
+        <table class="table-fill">
+            <thead>
+            <tr>
+                <th class="text-left">Time</th>
+                <th class="text-left">Deal Type</th>
+                <th class="text-left">Stock Amount</th>
+                <th class="text-left">Stock Rate</th>
+                <th class="text-left">Stock Symbol</th>
+            </tr>
+            </thead>
+            <tbody class="table-hover" id="sell-tbody-main">
+            <tr onclick="trade_stock('GOOGL')">
+                <td class="text-left">Google</td>
+                <td class="text-left">GOOGL</td>
+                <td class="text-left">125</td>
+                <td class="text-left">500</td>
+                <td class="text-left">500</td>
+            </tr>
+            <tr onclick="trade_stock('TS')">
+                <td class="text-left">Tesla</td>
+                <td class="text-left">TS</td>
+                <td class="text-left">550</td>
+                <td class="text-left">1100</td>
+                <td class="text-left">1100</td>
+            </tr>
+            <tr onclick="trade_stock('MSFT')">
+                <td class="text-left">Microsoft</td>
+                <td class="text-left">MSFT</td>
+                <td class="text-left">100</td>
+                <td class="text-left">700</td>
+                <td class="text-left">700</td>
+            </tr>
+            <tr  onclick="trade_stock('AZ')">
+                <td class="text-left">Amazon</td>
+                <td class="text-left">AZ</td>
+                <td class="text-left">225</td>
+                <td class="text-left">7000</td>
+                <td class="text-left">7000</td>
+            </tr>
+            <tr onclick="trade_stock('BMTH')">
+                <td class="text-left">Horizens</td>
+                <td class="text-left">BMTH</td>
+                <td class="text-left">100</td>
+                <td class="text-left">400</td>
+                <td class="text-left">400</td>
+            </tr>
+            <tr onclick="trade_stock('ZM')">
+                <td class="text-left">Zoom</td>
+                <td class="text-left">ZM</td>
+                <td class="text-left">175</td>
+                <td class="text-left">500</td>
+                <td class="text-left">500</td>
+            </tr>
+            </tbody>
+        </table>
+        <h2 style="color: white; text-decoration: underline; padding-left: 10%; padding-top: 2%;">Approved Table:</h2>
+        <table class="table-fill">
+            <thead>
+            <tr>
+                <th class="text-left">Time</th>
+                <th class="text-left">Deal Type</th>
+                <th class="text-left">Stock Amount</th>
+                <th class="text-left">Stock Rate</th>
+                <th class="text-left">Stock Symbol</th>
+            </tr>
+            </thead>
+            <tbody class="table-hover" id="approved-tbody-main">
+            <tr onclick="trade_stock('GOOGL')">
+                <td class="text-left">10:12:123</td>
+                <td class="text-left">Buy</td>
+                <td class="text-left">10</td>
+                <td class="text-left">500</td>
+                <td class="text-left">GOOGL</td>
+            </tr>
+            <tr onclick="trade_stock('TS')">
+                <td class="text-left">Tesla</td>
+                <td class="text-left">550</td>
+                <td class="text-left">1100</td>
+                <td class="text-left">1100</td>
+                <td class="text-left">TS</td>
+            </tr>
+            <tr onclick="trade_stock('MSFT')">
+                <td class="text-left">Microsoft</td>
+                <td class="text-left">100</td>
+                <td class="text-left">700</td>
+                <td class="text-left">700</td>
+                <td class="text-left">MSFT</td>
+            </tr>
+            <tr  onclick="trade_stock('AZ')">
+                <td class="text-left">Amazon</td>
+                <td class="text-left">225</td>
+                <td class="text-left">7000</td>
+                <td class="text-left">7000</td>
+                <td class="text-left">AZ</td>
+            </tr>
+            <tr onclick="trade_stock('BMTH')">
+                <td class="text-left">Horizens</td>
+                <td class="text-left">100</td>
+                <td class="text-left">400</td>
+                <td class="text-left">400</td>
+                <td class="text-left">BMTH</td>
+            </tr>
+            <tr onclick="trade_stock('ZM')">
+                <td class="text-left">Zoom</td>
+                <td class="text-left">175</td>
+                <td class="text-left">500</td>
+                <td class="text-left">500</td>
+                <td class="text-left">ZM</td>
+            </tr>
+            </tbody>
+        </table>
+        <h1 style="color: transparent;">_____</h1>
+        <script src="../js/chartAdv.js"></script
+    </body>
+</html>

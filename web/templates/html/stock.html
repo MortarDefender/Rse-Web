@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>stocks</title>
+        <meta content="stocks" property="og:title"/>
+        <meta content="stocks" property="twitter:title"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+        <link href="../css/stockPage.css" rel="stylesheet" type="text/css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+        <link href="prov.png" rel="shortcut icon" type="image/x-icon"/>
+        <link href="prov.png" rel="apple-touch-icon"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script>
+            $(document).ready(function() {
+                // createChart(["150","150","170","170","200"], ["10:50:52:296","10:50:53:485","10:51:03:378","10:51:21:520","10:51:35:788"]);
+                // setStockPage("<% stock symbol %>");  //  set time
+                // startChart();
+            });
+        </script>
+        <script src="../js/loader.js"></script>
+    </head>
+    <body class="body-2" onload="setStockPage('<% stock symbol %>')">
+        <div>
+            <nav role="navigation">
+                <div id="menuToggle">
+                    <input type="checkbox" />
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <ul id="menu">
+                        <a href="/"><li><i class="fa fa-home" aria-hidden="true" style="font-size:24px;"></i>  Home</li></a>
+                        <a href="/stocks"><li><i class="fa fa-list" aria-hidden="true" style="font-size:24px;"></i>  Stocks</li></a>
+                        <a href="/account"><li><i class="fa fa-credit-card-alt" aria-hidden="true" style="font-size:24px;"></i>  Account</li></a>
+                        <!--<a href="/admin"><li><i class="fa fa-user-secret" aria-hidden="true" style="font-size:24px;"></i>  Admin</li></a>-->
+                        <a href="/users"><li><i class="fa fa-users" style="font-size:24px;"></i>  Users</li></a>
+                        <a href="/settings"><li><i class="fa fa-cog" aria-hidden="true" style="font-size:24px;"></i>  Settings</li></a>
+                        <a href="/logout"><li><i class="fa fa-sign-out" aria-hidden="true" style="font-size:24px;"></i>  Logout</li></a>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="table-title">
+            <h1 id="main-title">'Stock' Trade Table:</h1>
+        </div>
+        <div class="stock-info">
+            <table>
+                <tr class="table-row">
+                    <th class="table-row2">Company Name:</th>
+                    <td class="table-row" id="companyName">Tesla</td>
+                </tr>
+                <tr class="table-row">
+                    <th class="table-row2">Stock Symbol:</th>
+                    <td class="table-row" id="symbol">TS</td>
+                </tr>
+                <tr class="table-row">
+                    <th class="table-row2">Rate Per Share:</th>
+                    <td class="table-row" id="rate">120</td>
+                </tr>
+                <tr class="table-row">
+                    <th class="table-row2">Revolution:</th>
+                    <td class="table-row" id="revolution">500</td>
+                </tr>
+                <tr class="table-row">
+                    <th class="table-row2">User Stock Amount:</th>
+                    <td class="table-row" id="userStocks">50</td>
+                </tr>
+            </table>
+            <div id="wrapper">
+                <div id="chart"></div>
+            </div>
+        </div>
+        <span style="padding-top: 15px;">___</span>
+        <table class="table-fill">
+            <thead>
+            <tr class="table-row">
+                <th class="text-left" style="width: 33%;">Time</th>
+                <th class="text-left" style="width: 33%;">Quantity</th>
+                <th class="text-left">Rate Per Share</th>
+                <th class="text-left">              </th>
+            </tr>
+            </thead>
+            <tbody class="table-hover" id="tbody-main">
+                <tr class="table-row">
+                    <td class="text-left">10:11:125</td>
+                    <td class="text-left">10</td>
+                    <td class="text-left">500</td>
+                    <td class="text-left" id="upDown1" style="color: black;"><span class="material-icons" style="color: red;">trending_up</span> 7%</td>
+                </tr>
+                <tr class="table-row">
+                    <td class="text-left">11:12:123</td>
+                    <td class="text-left">50</td>
+                    <td class="text-left">100</td>
+                    <td class="text-left" id="upDown2" style="background: linear-gradient(#333333, #dd1818); color: white;"><span class="material-icons">trending_down</span> 6%</td>
+                </tr>
+                <tr class="table-row">
+                    <td class="text-left">13:25:145</td>
+                    <td class="text-left">100</td>
+                    <td class="text-left">700</td>
+                    <td class="text-left" id="upDown3" style="background: linear-gradient(#0f9b0f, #000000); color: white;"><span class="material-icons">trending_up</span> 7%</td>
+                </tr>
+                <tr class="table-row">
+                    <td class="text-left">17:45:225</td>
+                    <td class="text-left">25</td>
+                    <td class="text-left">700</td>
+                    <td class="text-left" id="upDown4" style="background: linear-gradient(#0f9b0f, #000000); color: white;"><span class="material-icons">trending_up</span> 9%</td>
+                </tr>
+                <tr class="table-row">
+                    <td class="text-left">20:15:455</td>
+                    <td class="text-left">10</td>
+                    <td class="text-left">400</td>
+                    <td class="text-left" id="upDown5" style="background: linear-gradient(#0f9b0f, #000000); color: white;"><span class="material-icons">trending_up</span> 17%</td>
+                </tr>
+                <tr class="table-row">
+                    <td class="text-left">22:32:335</td>
+                    <td class="text-left">15</td>
+                    <td class="text-left">500</td>
+                    <td class="text-left" id="upDown6" style="background: linear-gradient(#333333, #dd1818); color: white;"><span class="material-icons">trending_down</span> 5%</td>
+                </tr>
+                <tr class="table-row">
+                    <td class="text-left">23:59:555</td>
+                    <td class="text-left">10</td>
+                    <td class="text-left">800</td>
+                    <td class="text-left" id="upDown7" style="background: linear-gradient(#333333, #dd1818); color: white;"><span class="material-icons">trending_down</span> 2%</td>
+                </tr><!---->
+            </tbody>
+        </table>
+        <button class="trade-btn" onclick="trade_stock('<% stock symbol %>')"> Trade </button> <!--<-->
+        <h2>___</h2>
+        <!--<script src="../js/chartLine.js"></script>-->
+        <script src="../js/chart.js"></script>
+    </body>
+</html>

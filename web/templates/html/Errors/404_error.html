@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+        <head>
+            <link href="../prov.png" rel="shortcut icon" type="image/x-icon"/>
+            <link href="../prov.png" rel="apple-touch-icon"/>
+                <style>
+                        a {
+                          color: inherit;
+                        }
+
+                        .terminal {
+                          position: absolute;
+                          top: 0;
+                          left: 0;
+                          height: 100%;
+                          width: 60%;
+                          padding: 0 20%;
+                          background-color: #010101;
+                          color: #00ee00;
+                          font-family: consolas;
+                          word-wrap: break-all;
+                        }
+                        .terminal #title {
+                          text-align: center;
+                          width: 100%;
+                          font-size: 6em;
+                        }
+                        .terminal .text {
+                          display: inline-block;
+                        }
+                        .terminal .cursor {
+                          display: inline;
+                          animation: blink .75s linear infinite;
+                        }
+                        .terminal .c {
+                          position: absolute;
+                          bottom: 10%;
+                          right: 10%;
+                        }
+                        .terminal .c .hearth {
+                          display: inline !important;
+                        }
+
+                        @keyframes blink {
+                          0% {
+                                opacity: 0;
+                          }
+                          33% {
+                                opacity: 1;
+                          }
+                          66% {
+                                opacity: 1;
+                          }
+                          100% {
+                                opacity: 0;
+                          }
+                        }
+                </style>
+				<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+				<script>
+					var text_1 = 'This link is broken or unidentified...',
+						text_2 = 'Please inform the webmaster...';
+					repeat(text_1, 1);
+					setTimeout(function() {
+						repeat(text_2, 2);
+					}, text_1.length * 100 + 1000);
+
+					function repeat(text, n) {
+							var i = 0,
+									repeatable = setInterval(function() {
+											$('#text_'+n).text($('#text_'+n).text() + text[i]);
+											i++;
+											if (i >= text.length) {
+													clearInterval(repeatable);
+											}
+									}, 100);
+					}
+				</script>
+        </head>
+        <body>
+                <div class='terminal'>
+                  <h1 id='title'>404</h1>
+                  <div class='text' id='text_1'>
+                  </div>
+                  <div class='text' id='text_2'>
+                  </div>
+                  <div class='cursor'>_</div>
+				  <h3 style="text-align: center;"><a href="/stocks">HOME</a></h3>
+                  </div>
+        </body>
+</html>

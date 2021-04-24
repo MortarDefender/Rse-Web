@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" build-on-make="true" name="RSE3:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/RSE3_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="RSE3" />
+          <element id="module-output" name="Ui" />
+          <element id="module-output" name="Engine" />
+          <element id="module-output" name="DTO" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="file-copy" path="$USER_HOME$/Downloads/מצגות הקורס + מדריכים רלבנטים-20210219/כלי עזר וספריות צד שלישי/GSON/gson-2.1.jar" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="RSE3/web/Web" />
+    </root>
+  </artifact>
+</component>

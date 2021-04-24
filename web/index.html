@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>stocks</title>
+        <meta content="stocks" property="og:title"/>
+        <meta content="stocks" property="twitter:title"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+        <link href="templates/html/prov.png" rel="shortcut icon" type="image/x-icon"/>
+        <link href="templates/html/prov.png" rel="apple-touch-icon"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+        <link href="templates/css/home.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="templates/js/home.js"></script>
+        <script>
+            $(document).ready(function() {
+                $("#login-btn").click(function() {
+                    Swal.fire({
+                        title: '<span class="login-box">Login:</span>',
+                        background: "url(templates/css/blueTri.png) center, center",
+                        html:
+                            '<input type="text" id="swal-input1" name="companyName" class="swal2-input" style="color: white; max-width: 70%;" required>' +
+                            '<select id="swal-input2" name="rank" class="swal2-input" style="color: white; max-width: 70%;"><option value="Stock Broker" style="color: black;">Stock Broker</option><option value="Admin" style="color: black;">Admin</option></select>',
+                        focusConfirm: false,
+                        preConfirm: () => {
+                            let formValues = [
+                                document.getElementById('swal-input1').value,
+                                document.getElementById('swal-input2').value
+                            ]
+
+                            return $.post({dataType: "json",
+                                url: '/auth',
+                                data: {
+                                    username: $(formValues)[0],
+                                    userType: $(formValues)[1]
+                                },
+                                success: function (info) {
+                                    if (info.error !== undefined){
+                                        // alert(info.error);
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error In Log In:',
+                                            width: 400,
+                                            html: info.error,
+                                            footer: ''
+                                        })
+                                    } else {
+                                        window.location.replace(info.url);
+                                    }
+                                }
+                            });
+                        }
+                    })
+                })
+            });
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-toggleable-md fixed-top navbar-transparent" color-on-scroll="500">
+            <div class="container">
+                <div class="navbar-translate">
+                    <button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-bar"></span>
+                        <span class="navbar-toggler-bar"></span>
+                        <span class="navbar-toggler-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/"><img src="templates/html/prov.png" style="width: 50px; height: 50px;"></a> <!--LOGO-->
+                </div>
+                <div class="collapse navbar-collapse" id="navbarToggler">
+                    <ul class="navbar-nav ml-auto">
+                        <!--<li class="nav-item">
+                            <a class="nav-link" rel="tooltip" title="Follow us on Twitter" data-placement="bottom" href="https://twitter.com/" target="_blank">
+                                <i class="fa fa-twitter"></i>
+                                <p class="hidden-lg-up">Twitter</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" rel="tooltip" title="Like us on Facebook" data-placement="bottom" href="https://www.facebook.com/" target="_blank">
+                                <i class="fa fa-facebook-square"></i>
+                                <p class="hidden-lg-up">Facebook</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" rel="tooltip" title="Follow us on Instagram" data-placement="bottom" href="https://www.instagram.com/" target="_blank">
+                                <i class="fa fa-instagram"></i>
+                                <p class="hidden-lg-up">Instagram</p>
+                            </a>
+                        </li>-->
+                        <li class="nav-item">
+                            <a class="nav-link" rel="tooltip" title="Star on GitHub" data-placement="bottom" href="https://www.github.com/" target="_blank">
+                                <i class="fa fa-github" style="font-size: 20px;"></i>
+                                <p class="hidden-lg-up">GitHub</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="login-btn" class="btn btn-danger btn-round" style="color: white;">Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="wrapper">
+            <div class="page-header section-dark" style="background-image: url('https://images.unsplash.com/photo-1477588810655-f7b477637c20?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2089&q=80')">
+                <!--http://demos.creative-tim.com/paper-kit-2/assets/img/antoine-barres.jpg-->
+                <div class="filter"></div>
+                <div class="content-center">
+                    <div class="container">
+                        <div class="title-brand">
+                            <h1 class="presentation-title">Rizpa Stock Exchange</h1>
+                            <div class="fog-low">
+                                <img src="http://demos.creative-tim.com/paper-kit-2/assets/img/fog-low.png" alt="">
+                            </div>
+                            <div class="fog-low right">
+                                <img src="http://demos.creative-tim.com/paper-kit-2/assets/img/fog-low.png" alt="">
+                            </div>
+                        </div>
+                        <h2 class="presentation-subtitle text-center">The Project</h2>
+                    </div>
+                </div>
+                <div class="moving-clouds" style="background-image: url('http://demos.creative-tim.com/paper-kit-2/assets/img/clouds.png'); "></div>
+            </div>
+        </div>
+    </body>
+</html>

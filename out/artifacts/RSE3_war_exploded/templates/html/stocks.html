@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>stocks</title>
+        <meta content="stocks" property="og:title"/>
+        <meta content="stocks" property="twitter:title"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+        <link href="../css/stocks.css" rel="stylesheet" type="text/css"/>
+        <link href="../css/chatUi.css" rel="stylesheet" type="text/css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+        <link href="prov.png" rel="shortcut icon" type="image/x-icon"/>
+        <link href="prov.png" rel="apple-touch-icon"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.css"> <!---->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"> <!---->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" type="text/javascript"></script> <!---->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> <!---->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.0.0/animate.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script>
+            function userTable() {
+                users();
+                // console.log(JSON.stringify(UsersTable));
+                Swal.fire({
+                    title: '<h3 style="text-decoration: underline;" id="users-title">Active Users:</h3>',
+                    html: UsersTable,
+                    position: 'top-end',
+                    showClass: {
+                        popup: `
+                                       animate__animated
+                                       animate__fadeInRight
+                                       animate__faster
+                                       `
+                    },
+                    hideClass: {
+                        popup: `
+                                       animate__animated
+                                       animate__fadeOutRight
+                                       animate__faster
+                                       `
+                    },
+                    grow: 'column',
+                    width: 400,
+                    showConfirmButton: false,
+                    showCloseButton: true
+                })
+            }
+
+            function check() {
+                users();
+
+                Swal.fire({
+                    title: 'Select Users:',
+                    width: 400,
+                    html: CheckBoxUsers,
+                    showConfirmButton: true,
+                    preConfirm: () => {
+                        return $("#user-form").submit(function() {
+                            $.post({
+                                dataType: "json",
+                                data: $(this).serialize(),
+                                url: this.action,
+                                timeout: 2000,
+                                error: function(errorObject) {
+                                    console.error("Failed to login !");
+                                    alert("error  " + errorObject.responseText);
+                                },
+                                success: function(info) {
+                                    if (info.error !== undefined){
+                                        alert(info.error);
+                                    } else {
+                                        window.location.replace(info.url);
+                                    }
+                                }
+                            });
+
+                            return false;
+                        });
+                    }
+                })
+            }
+
+            function trade_stock(symbol) {
+                window.location.href = "/stockPage?symbol=" + symbol;
+            }
+
+
+
+            $(document).ready(function() {
+                var UsersTable = "";
+                getAllStocks();  // set time
+                addAccount("users");
+                setInterval(users, 2000);
+                setInterval(getAllStocks, 2000);
+            });
+        </script>
+        <script src="../js/loader.js"></script>
+        <script src="../js/chatJs.js"></script>
+    </head>
+    <body class="body-2">
+        <div>
+            <nav role="navigation">
+                <div id="menuToggle">
+                    <input type="checkbox" />
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <ul id="menu">
+                        <a href="/" ><li><i class="fa fa-home" aria-hidden="true" style="font-size:24px;"></i>  Home</li></a>
+                        <a href="?" id="users"><li><i class="fa fa-users" style="font-size:24px;"></i>  Users</li></a>
+                        <a href="?"><li><i class="fa fa-cog" aria-hidden="true" style="font-size:24px;"></i>  Settings</li></a>
+                        <a href="/logout"><li><i class="fa fa-sign-out" aria-hidden="true" style="font-size:24px;"></i>  Logout</li></a>
+                    </ul>
+                </div>
+            </nav>
+            <i class="fa fa-users" aria-hidden="true" onclick="userTable()" style="position: fixed; top: 20px; right: 20px; color: white;font-size:24px;"></i>
+        </div>
+        <div class="table-title">
+            <h1 >Stock Table:</h1> <!--<h1 onclick="check()" >Stock Table:</h1>-->
+        </div>
+        <table class="table-fill" id="main-table">
+            <thead>
+            <tr>
+                <th class="text-center">Company Name</th>
+                <th class="text-center">Symbol</th>
+                <th class="text-center">Rate Per Share</th>
+                <th class="text-center">Revolution</th>
+                <th class="text-center">Change</th>
+            </tr>
+            </thead>
+            <tbody class="table-hover" id="tbody-main">
+            <tr>
+                <td style="text-align: center; font-size: 20px; font-weight: bold;" colspan="4">There is no stocks to show</td>
+            </tr>
+            <!--<tr onclick="trade_stock('GOOGL')">
+                    <td class="text-left">GOOGL</td>
+                    <td class="text-left">GOOGL</td>
+                    <td class="text-left">125</td>
+                    <td class="text-left">500</td>
+                    <td class="text-left">500</td>
+                </tr>
+                <tr onclick="trade_stock('TS')">
+                    <td class="text-left">Tesla</td>
+                    <td class="text-left">TS</td>
+                    <td class="text-left">550</td>
+                    <td class="text-left">550</td>
+                    <td class="text-left">1100</td>
+                </tr>
+                <tr onclick="trade_stock('MSFT')">
+                    <td class="text-left">Microsoft</td>
+                    <td class="text-left">MSFT</td>
+                    <td class="text-left">100</td>
+                    <td class="text-left">100</td>
+                    <td class="text-left">700</td>
+                </tr>
+                <tr  onclick="trade_stock('AZ')">
+                    <td class="text-left">Amazon</td>
+                    <td class="text-left">AZ</td>
+                    <td class="text-left">225</td>
+                    <td class="text-left">225</td>
+                    <td class="text-left">7000</td>
+                </tr>
+                <tr onclick="trade_stock('BMTH')">
+                    <td class="text-left">Horizens</td>
+                    <td class="text-left">BMTH</td>
+                    <td class="text-left">100</td>
+                    <td class="text-left">100</td>
+                    <td class="text-left">400</td>
+                </tr>
+                <tr onclick="trade_stock('ZM')">
+                    <td class="text-left">Zoom</td>
+                    <td class="text-left">ZM</td>
+                    <td class="text-left">ZM</td>
+                    <td class="text-left">175</td>
+                    <td class="text-left">500</td>
+                </tr>-->
+            </tbody>
+        </table>
+
+        <div id="chat-circle" class="btn btn-raised">
+            <div id="chat-overlay"></div>
+            <i class="material-icons">speaker_phone</i>
+        </div>
+        <div class="chat-box">
+            <div class="tab">
+                <div class="chat-box-header" id="tab-header">
+                    <i class="material-icons" style="cursor:pointer" onclick="addChat()">add</i>
+                </div>
+            </div>
+            <div class="box">
+                <div class="chat-box-header">
+                    <span id="chat-name">Everyone Chat Room: </span>
+                    <span class="chat-box-toggle"><i class="material-icons">close</i></span>
+                </div>
+                <div class="chat-box-body">
+                    <div class="chat-box-overlay">
+                    </div>
+                    <div class="chat-logs">
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <form>
+                        <input type="text" id="chat-input" placeholder="Send a message..."/>
+                        <button type="submit" class="chat-submit" id="chat-submit"><i class="material-icons">send</i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <listener>
+        <listener-class>com.web.ContextListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>Stocks</servlet-name>
+        <servlet-class>com.web.AllStocksPage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Stocks</servlet-name>
+        <url-pattern>/stocks</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Account</servlet-name>
+        <servlet-class>com.web.AccountPage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Account</servlet-name>
+        <url-pattern>/account</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>StockPage</servlet-name>
+        <servlet-class>com.web.StockPage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StockPage</servlet-name>
+        <url-pattern>/stockPage</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Admin</servlet-name>
+        <servlet-class>com.web.Admin</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Admin</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+
+    <error-page>
+        <error-code>400</error-code>
+        <location>/templates/html/Errors/400_error.html</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/templates/html/Errors/403_error.html</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/templates/html/Errors/404_error.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/templates/html/Errors/500_error.html</location>
+    </error-page>
+</web-app>
