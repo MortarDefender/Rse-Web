@@ -5,7 +5,7 @@ import objects.dto.TransactionDTO;
 import java.util.List;
 import java.util.Set;
 
-public interface UserInter extends Dto {
+public interface UserInterDto extends Dto {
     String getType();
     int getAccount();
     String getUsername();

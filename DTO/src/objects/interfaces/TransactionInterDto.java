@@ -1,6 +1,6 @@
 package objects.interfaces;
 
-public interface TransactionInter extends Dto {
+public interface TransactionInterDto extends Dto {
     int getSum();
     String getTime();
     String getSymbol();

@@ -2,6 +2,8 @@ package com.RSE;
 
 import objects.dto.TransactionDTO;
 import com.sun.istack.internal.NotNull;
+import com.RSE.interfaces.TransactionInter;
+import objects.interfaces.TransactionInterDto;
 
 import java.util.Date;
 import java.time.Instant;
@@ -9,7 +11,7 @@ import java.time.Duration;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 
-public class Transaction implements Serializable, Comparable<Transaction> {
+public class Transaction implements Serializable, TransactionInter {  // Comparable<Transaction>,
     private final Instant timeStamp;
     private final String symbol, time;
     private final int transactionFee, accountBalance, actionType;      // 0 == Buy || 1 == Sell || 2 = Self Charge
@@ -27,6 +29,7 @@ public class Transaction implements Serializable, Comparable<Transaction> {
         this.accountBalance = accountBalance;
     }
 
+    @Override
     public String getAction() {
         if (this.actionType == 0)
             return "Buy";
@@ -35,17 +38,26 @@ public class Transaction implements Serializable, Comparable<Transaction> {
         return "Self Charge";
     }
 
+    @Override
     public String getTime() { return this.time; }
 
+    @Override
     public String getSymbol() { return this.symbol; }
 
+    @Override
     public int getSum() { return this.transactionFee; }
 
+    @Override
     public int getAccount() { return this.accountBalance; }
 
+    @Override
     public Instant getTimeStamp() { return this.timeStamp; }
 
+    @Override
     public TransactionDTO getDto() { return new TransactionDTO(getAction(), transactionFee, accountBalance, time, symbol, timeStamp.getNano()); }
+
+    @Override
+    public TransactionInterDto getInterDto() { return new TransactionDTO(getAction(), transactionFee, accountBalance, time, symbol, timeStamp.getNano()); }
 
     @Override
     public String toString() {
@@ -57,10 +69,18 @@ public class Transaction implements Serializable, Comparable<Transaction> {
         return res.concat("\tTransaction value: " + transactionFee + "\tAccount Balance Before: " + accountBalance + "\tAccount Balance After: " + (accountBalance + transactionFee));
     }
 
-    @Override
+    /*@Override
     public int compareTo(@NotNull Transaction other) {
         if (Duration.between(timeStamp, other.timeStamp).getNano() < 0)
             return -1;
         return 1;
+    }*/
+
+    @Override
+    public int compareTo(@NotNull TransactionInter o) {
+        if (Duration.between(timeStamp, o.getTimeStamp()).getNano() < 0)
+            return -1;
+        return 1;
     }
+
 }

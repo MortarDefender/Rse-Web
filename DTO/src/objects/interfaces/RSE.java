@@ -1,13 +1,13 @@
 package objects.interfaces;
 
+import objects.dto.UserDTO;
 import objects.dto.DealDTO;
 import objects.dto.StockDTO;
 import objects.dto.TransactionDTO;
-import objects.dto.UserDTO;
 
-import java.io.InputStream;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.io.InputStream;
 
 public interface RSE {
     CommandAnswer<Map<String, Integer>, String> apiGraph(String stockName);

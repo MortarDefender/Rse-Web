@@ -1,9 +1,9 @@
 package objects.dto;
 
 import objects.interfaces.Dto;
-import objects.interfaces.StockInter;
+import objects.interfaces.StockInterDto;
 
-public class StockDTO implements Dto, StockInter {
+public class StockDTO implements Dto, StockInterDto {
     private final String companyName, symbol;
     private final int rate, totalDeals, revolution, quantity;
 

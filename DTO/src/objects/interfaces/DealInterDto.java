@@ -2,7 +2,7 @@ package objects.interfaces;
 
 import objects.dto.UserDTO;
 
-public interface DealInter extends Dto {
+public interface DealInterDto extends Dto {
     int getRate();
     String getTime();
     int getAmount();

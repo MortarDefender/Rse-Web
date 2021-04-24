@@ -1,9 +1,9 @@
 package objects.dto;
 
-import objects.interfaces.DealInter;
+import objects.interfaces.DealInterDto;
 import objects.interfaces.Dto;
 
-public class DealDTO implements Dto, DealInter {
+public class DealDTO implements Dto, DealInterDto {
     private final UserDTO publisher;
     private final int amount, rate, revolution, timeStamp;
     private final String symbol, time, action, status, publisherName;  // Buy || Sell

@@ -1,13 +1,13 @@
 package objects.dto;
 
 import objects.interfaces.Dto;
-import objects.interfaces.UserInter;
+import objects.interfaces.UserInterDto;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.List;
 
-public class UserDTO implements Dto, UserInter {
+public class UserDTO implements Dto, UserInterDto {
     private final String username, type;  // stock broker || admin
     private final int account, revolution;
     private final Map<String, Integer> stocks;

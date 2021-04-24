@@ -1,6 +1,6 @@
 package objects.interfaces;
 
-public interface StockInter extends Dto {
+public interface StockInterDto extends Dto {
     int getRate();
     String getSymbol();
     int getQuantity();

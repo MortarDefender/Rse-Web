@@ -2,19 +2,23 @@ package com.RSE;
 
 import objects.dto.UserDTO;
 import objects.dto.TransactionDTO;
+import com.RSE.interfaces.UserInter;
+import com.RSE.interfaces.StockInter;
+import objects.interfaces.UserInterDto;
+import com.RSE.interfaces.TransactionInter;
 
-import java.time.Instant;
 import java.util.*;
+import java.time.Instant;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class User implements Serializable {
+public class User implements Serializable, UserInter {
     private final boolean type;    // stock broker == true || admin == false
     private final String username;
     private final AtomicInteger account;
     private Map<String, AtomicInteger> stocks;
-    private final ArrayList<Transaction> transactions;
+    private final List<TransactionInter> transactions;
 
     public User(String name, boolean type) {
         this(name, type, 0);
@@ -28,45 +32,63 @@ public class User implements Serializable {
         this.account = new AtomicInteger(account);
     }
 
+    @Override
     public boolean getType() { return type; }
+
+    @Override
     public int getAccount() { return account.get(); }
+
+    @Override
     public String getUsername() { return username; }
+
+    @Override
+    public Set<String> getStocks() { return this.stocks.keySet(); }
+
+    @Override
     public String getTypeString() { return type ? "Stock Broker" : "Admin"; }
 
-    public int getTotalRevolution(Map<String, Stock> rseStocks) {
+    @Override
+    public int getTotalRevolution(Map<String, StockInter> rseStocks) {
         return this.stocks.keySet().stream().mapToInt(sym -> this.stocks.get(sym).get() * rseStocks.get(sym).getRate()).sum();
     }
 
-    public Set<String> getStocks() { return this.stocks.keySet(); }
-
+    @Override
     public Map<String, Integer> getStocksDTO() {
         Map<String, Integer> l = new HashMap<>();
         this.stocks.forEach((k, v) -> l.put(k, v.get()));
         return l;
     }
 
+    @Override
     public int getStockQuantity(String symbol) {
         if (this.stocks.containsKey(symbol))
             return this.stocks.get(symbol).get();
         return 0;
     }
 
-    public List<Transaction> getTransactions() { return this.transactions; }
+    public List<TransactionInter> getTransactions() { return this.transactions; }
 
+    @Override
     public List<TransactionDTO> getTransactionsDTO() {
         List<TransactionDTO> l = new ArrayList<>();
         this.transactions.forEach(transaction -> l.add(transaction.getDto()));
         return l;
     }
 
-    public UserDTO getDto(Map<String, Stock> rseStocks) { return new UserDTO(username, getTypeString(), account.get(), getStocksDTO(), getTransactionsDTO(), getTotalRevolution(rseStocks)); }
+    @Override
+    public UserDTO getDto(Map<String, StockInter> rseStocks) { return new UserDTO(username, getTypeString(), account.get(), getStocksDTO(), getTransactionsDTO(), getTotalRevolution(rseStocks)); }
+
+    @Override
+    public UserInterDto getInterDto(Map<String, StockInter> rseStocks) { return new UserDTO(username, getTypeString(), account.get(), getStocksDTO(), getTransactionsDTO(), getTotalRevolution(rseStocks)); }
 
     public void increaseAccount(int amount) { this.account .addAndGet(amount); }
 
     public void decreaseAccount(int amount) { this.account.addAndGet(-amount); }
 
-    public void addTransaction(Transaction transaction) { this.transactions.add(transaction); }
+    @Override
+    public void addTransaction(TransactionInter transaction) { this.transactions.add(transaction); }
 
+    @Override
     public void addAllStocks(Map<String, Integer> stocks, boolean flag) {
         Map<String, AtomicInteger> stocksBackup = new HashMap<>(this.stocks);
         if (flag)
@@ -84,12 +106,14 @@ public class User implements Serializable {
         });
     }
 
+    @Override
     public void addStock(String stockName, int amount) {
         if (this.stocks.containsKey(stockName))
             throw new InvalidParameterException("The user '" + this.username + "' has the stock named '" + stockName + "' already");
         this.stocks.put(stockName, new AtomicInteger(amount));
     }
 
+    @Override
     public void increaseStockAmount(String stockName, int amount) {
         if (this.stocks.containsKey(stockName))
             this.stocks.get(stockName).addAndGet(amount);
@@ -97,6 +121,7 @@ public class User implements Serializable {
             this.addStock(stockName, amount);
     }
 
+    @Override
     public void decreaseStockAmount(String stockName, int amount) {
         if (this.stocks.containsKey(stockName))
             this.stocks.get(stockName).addAndGet(-amount);
@@ -104,6 +129,7 @@ public class User implements Serializable {
             throw new InvalidParameterException(username + " does not have any stock of " + stockName);
     }
 
+    @Override
     public void createTransactionEffect(boolean action, boolean sender, int sum, int amount, String time, Instant timeStamp, String stockName) {
         if ((action && sender) || (!action && !sender)) {
             addTransaction(new Transaction(0, -sum, account.get(), time, timeStamp, stockName));
@@ -116,14 +142,17 @@ public class User implements Serializable {
         }
     }
 
+    @Override
     public void addMoneyCharge(int amount) {
         // if (amount <= 0)   // amount needs to be positive ??
         this.transactions.add(new Transaction(amount, account.get()));
         this.account.addAndGet(amount);
     }
 
+    @Override
     public boolean checkStock(String stockName) { return this.stocks.containsKey(stockName); }
 
+    @Override
     public int quantityOfStock(String stockName) throws InvalidParameterException {
         if (this.stocks.containsKey(stockName))
             return this.stocks.get(stockName).get();
@@ -140,7 +169,7 @@ public class User implements Serializable {
         res = res.concat("Transactions: \n");
         if (this.transactions.size() == 0)
             res = res.concat("\tThere is no transactions to show\n");
-        for (Transaction transaction : this.transactions)
+        for (TransactionInter transaction : this.transactions)
             res = res.concat("\t" + transaction);
         return res;
     }

@@ -1,9 +1,9 @@
 package objects.dto;
 
 import objects.interfaces.Dto;
-import objects.interfaces.TransactionInter;
+import objects.interfaces.TransactionInterDto;
 
-public class TransactionDTO implements Dto, TransactionInter {
+public class TransactionDTO implements Dto, TransactionInterDto {
     private final String symbol, time, actionType;  // Buy || Sell || Self Charge
     private final int sum, accountBefore, accountAfter, timeStamp;
 

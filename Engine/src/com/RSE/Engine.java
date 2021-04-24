@@ -10,6 +10,9 @@ import java.util.*;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.RSE.interfaces.DealInter;
+import com.RSE.interfaces.StockInter;
+import com.RSE.interfaces.UserInter;
 import generated.*;
 import objects.dto.*;
 import org.w3c.dom.Node;
@@ -27,9 +30,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class Engine implements Serializable, RSE {
     public enum Commands { LMT, MKT, FOK, IOC }
-    private final Map<String, User> users;                   // users name   -> User
-    private final Map<String, Stock> stocks;                 // stock symbol -> Stock
-    private final Map<String, Map<String, List<Deal>>> db;   // stock symbol -> { buy -> [Deals], sell -> [Deals], approved -> [Deals] }
+    private final Map<String, UserInter> users;                   // users name   -> User Interface
+    private final Map<String, StockInter> stocks;                 // stock symbol -> Stock Interface
+    private final Map<String, Map<String, List<DealInter>>> db;   // stock symbol -> { buy -> [Deals Interface], sell -> [Deals Interface], approved -> [Deals Interface] }
     private final static String JAXB_XML_GAME_PACKAGE_NAME = "generated";
 
     public Engine() {
@@ -84,7 +87,7 @@ public class Engine implements Serializable, RSE {
         if (this.stocks.containsKey(symbol)) // StockSymbolDuplication
             return new AnswerDto<>(null, "The symbol '" + symbol + "' is assigned to a different company", ExpType.StockSymbolDuplication);
         // throw new InvalidParameterException("The symbol '" + symbol + "' is assigned to a different company");
-        for (Stock stock : this.stocks.values()) {  // StockCompanyDuplication
+        for (StockInter stock : this.stocks.values()) {  // StockCompanyDuplication
             if (stock.getCompanyName().equals(companyName))
                 return new AnswerDto<>(null, "The stock of '" + companyName + "' exist in the list", ExpType.StockCompanyDuplication);
             // throw new InvalidParameterException("The stock of '" + companyName + "' exist in the list");
@@ -180,16 +183,16 @@ public class Engine implements Serializable, RSE {
         /* return the difference from the two last deals  */
         List<Integer> diff = new ArrayList<>();
         for (String symbol : this.stocks.keySet()) {
-            List<Deal> symDeals = this.db.get(symbol).get("Approved");
+            List<DealInter> symDeals = this.db.get(symbol).get("Approved");
             if (symDeals.size() == 0)
                 diff.add(0);
             else if (symDeals.size() == 1) {
-                Deal last_deal = symDeals.get(0);
+                DealInter last_deal = symDeals.get(0);
                 diff.add((int) ((last_deal.getRate() / (double) this.stocks.get(symbol).getRate()) * 100 - 100));
             }
             else {
-                Deal before_last_deal = symDeals.get(symDeals.size() - 2);
-                Deal last_deal = symDeals.get(symDeals.size() - 1);
+                DealInter before_last_deal = symDeals.get(symDeals.size() - 2);
+                DealInter last_deal = symDeals.get(symDeals.size() - 1);
                 diff.add((int) ((last_deal.getRate() / (double) before_last_deal.getRate()) * 100 - 100));
             }
         }
@@ -496,7 +499,7 @@ public class Engine implements Serializable, RSE {
 
     private void createDbStockList(String symbol) {
         /* creates the lists of deals for the stock with the given symbol */
-        Map<String, List<Deal>> item = new HashMap<>(3);
+        Map<String, List<DealInter>> item = new HashMap<>(3);
         item.put("Buy", new ArrayList<>());
         item.put("Sell", new ArrayList<>());
         item.put("Approved", new ArrayList<>());
@@ -534,7 +537,7 @@ public class Engine implements Serializable, RSE {
                 res = res.concat("List " + list + ":\n");
                 if (this.db.get(stock).get(list).size() == 0)
                     res = res.concat("\t" + "There is no deals to show\n");
-                for (Deal item : this.db.get(stock).get(list)) {
+                for (DealInter item : this.db.get(stock).get(list)) {
                     res = res.concat("\t" + item.toString()) + "\n";
                     revenue += item.getAmount() * item.getRate();
                 }
@@ -549,12 +552,12 @@ public class Engine implements Serializable, RSE {
     @Deprecated
     private String print(String name) throws InvalidParameterException {  // debug
         /* return the buy, sell and approved list of the stock specified */
-        for(Stock stock : this.stocks.values()) {
+        for(StockInter stock : this.stocks.values()) {
             if (stock.getCompanyName().equals(name)) {
                 System.out.println("======== " + stock + " ========");
                 for (String list : this.db.get(stock.getSymbol()).keySet()) {
                     System.out.println("List " + list);
-                    for (Deal item : this.db.get(stock.getSymbol()).get(list))
+                    for (DealInter item : this.db.get(stock.getSymbol()).get(list))
                         return item.toString();
                 }
             }
@@ -568,7 +571,7 @@ public class Engine implements Serializable, RSE {
         String res = "";
         if (this.stocks.size() == 0)
             return "There is no Stocks to show\n";
-        for(Stock stock : this.stocks.values()) {
+        for(StockInter stock : this.stocks.values()) {
             res = res.concat(stock.toString() + "\n");
         }
         return res;
@@ -581,21 +584,21 @@ public class Engine implements Serializable, RSE {
         if (!this.stocks.containsKey(name))
             throw new InvalidParameterException("There is no company with that name in objects.interfaces.RSE");
         res = res.concat(this.stocks.get(name).toString() + "\nDeals:\n");
-        ArrayList<Deal> allDeals = new ArrayList<>();
+        ArrayList<DealInter> allDeals = new ArrayList<>();
         for (String key : this.db.get(name).keySet())
             allDeals.addAll(this.db.get(name).get(key));
-        allDeals.sort((Deal a, Deal b) -> (a.getTime().compareTo(b.getTime()) < 0) ? 1 : -1);
-        for (Deal item : allDeals)
-            res = res.concat(item.print() + "\n");
+        allDeals.sort((DealInter a, DealInter b) -> (a.getTime().compareTo(b.getTime()) < 0) ? 1 : -1);
+        for (DealInter item : allDeals)
+            res = res.concat(item + "\n");
         return res;
     }
 
-    private void insert(Deal deal) {
+    private void insert(DealInter deal) {
         /* insert a new deal to the pending list of its kind */
         String key = deal.getAction() ? "Buy" : "Sell";
-        this.stocks.get(deal.getSymbol()).setTotalDeals();
+        this.stocks.get(deal.getSymbol()).incTotalDeals();
         this.db.get(deal.getSymbol()).get(key).add(deal);
-        this.db.get(deal.getSymbol()).get(key).sort(Deal::compareTo);
+        this.db.get(deal.getSymbol()).get(key).sort(DealInter::compareTo);
     }
 
     private CommandAnswer<List<DealDTO>, String> commandException(String symbol, boolean action, int amount, String username) {
@@ -626,9 +629,9 @@ public class Engine implements Serializable, RSE {
         return new AnswerDto<>();
     }
 
-    private void commandHelper(String symbol, boolean action, String time, Instant timeStamp, int rate, int amount, User sender, User receiver, ArrayList<Deal> approved, List<DealDTO> result) {
+    private void commandHelper(String symbol, boolean action, String time, Instant timeStamp, int rate, int amount, UserInter sender, UserInter receiver, ArrayList<DealInter> approved, List<DealDTO> result) {
         /* create the new deal and creating the transaction effect */
-        Deal new_deal = new Deal(symbol, action, amount, rate, sender, time, timeStamp);
+        DealInter new_deal = new Deal(symbol, action, amount, rate, sender, time, timeStamp);
         new_deal.setRevolution(amount * rate);
         sender.createTransactionEffect(action, true, amount * rate, amount, time, timeStamp, symbol);
         receiver.createTransactionEffect(action, false, amount * rate, amount, time, timeStamp, symbol);
@@ -639,20 +642,20 @@ public class Engine implements Serializable, RSE {
         this.stocks.get(symbol).setRate(new_deal.getRate());
     }
 
-    private CommandAnswer<List<DealDTO>, String> TradeCommand(Commands cm, String symbol, boolean action, int amount, int rate, User user)  throws InvalidParameterException {
+    private CommandAnswer<List<DealDTO>, String> TradeCommand(Commands cm, String symbol, boolean action, int amount, int rate, UserInter user)  throws InvalidParameterException {
         /* activate the command according to cm with the given data */
         // if (this.stocks.get(symbol).getQuantity() < amount) // CommandUserBuyOverQuantity
         //     return new AnswerDto<>(null, username + " can not buy more stock than the quantity of the company", ExpType.CommandUserBuyOverQuantity);
         //     // throw new InvalidParameterException("The amount of stocks is higher than the max amount of the stock\nThe deal has been canceled\n");
         if (cm.equals(Commands.MKT))
             rate = this.stocks.get(symbol).getRate();
-        Deal deal = new Deal(symbol, action, amount, rate, user);
+        DealInter deal = new Deal(symbol, action, amount, rate, user);
         DealDTO dealOrg = deal.getDto("Canceled", this.stocks);
         String oppositeKey = action ? "Sell" : "Buy";
-        ArrayList<Deal> key_temp = new ArrayList<>(this.db.get(symbol).get(oppositeKey));
-        ArrayList<Deal> approved_temp = new ArrayList<>(this.db.get(symbol).get("Approved"));
-        ArrayList<Deal> new_approved = new ArrayList<>();
-        Stock stock_temp = new Stock(this.stocks.get(symbol));
+        ArrayList<DealInter> key_temp = new ArrayList<>(this.db.get(symbol).get(oppositeKey));
+        ArrayList<DealInter> approved_temp = new ArrayList<>(this.db.get(symbol).get("Approved"));
+        ArrayList<DealInter> new_approved = new ArrayList<>();
+        StockInter stock_temp = new Stock(this.stocks.get(symbol));
         List<DealDTO> result = new ArrayList<>();
         AtomicBoolean broke = new AtomicBoolean(false);
 
