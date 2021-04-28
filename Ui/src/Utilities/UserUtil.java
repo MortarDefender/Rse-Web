@@ -1,5 +1,6 @@
 package Utilities;
 
+import chat.UsersCommunication;
 import com.google.gson.Gson;
 import com.web.Authentication;
 import com.web.ContextListener;
@@ -38,7 +39,7 @@ public class UserUtil extends HttpServlet {
         if (info) {
             switch (symbol) {
                 case "--":
-                    Map<String, String> data = ContextListener.um.getUsers();
+                    Map<String, String> data = UsersCommunication.getUsers();
                     List<Map<String, String>> users = new ArrayList<>(data.size());
                     for (String key : data.keySet()) {
                         Map<String, String> user = new HashMap<>();

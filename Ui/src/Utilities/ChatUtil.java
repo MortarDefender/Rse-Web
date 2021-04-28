@@ -1,6 +1,7 @@
 package Utilities;
 
 import chat.ChatMessage;
+import chat.UsersCommunication;
 import com.google.gson.Gson;
 import com.web.Authentication;
 import com.web.ContextListener;
@@ -55,9 +56,9 @@ public class ChatUtil extends HttpServlet {
             case "info":  // get chat messages
                 List<ChatMessage> chat;
                 if (message.equals("first"))
-                    chat = ContextListener.cm.getChatMessages(chatName, username, true);
+                    chat = UsersCommunication.getChatMessages(chatName, username, true);
                 else
-                    chat = ContextListener.cm.getChatMessages(chatName, username, false);
+                    chat = UsersCommunication.getChatMessages(chatName, username, false);
                 json = gson.toJson(chat);
                 if (ContextListener.DEBUG)
                     System.out.println(chatName + ": " + json);
@@ -65,14 +66,14 @@ public class ChatUtil extends HttpServlet {
             case "rooms_info":  // get the rooms names
                 if (ContextListener.DEBUG)
                     System.out.println("username: " + username);
-                Set<String> rooms = ContextListener.cm.getRooms(username);
+                Set<String> rooms = UsersCommunication.getRooms(username);
                 json = gson.toJson(rooms);
                 break;
             case "new_chat":  // create new chat
-                if (participants != null && !ContextListener.cm.chatCheck(chatName) && !participants[0].equals("")) {
+                if (participants != null && !UsersCommunication.chatCheck(chatName) && !participants[0].equals("")) {
                     Set<String> users = new HashSet<>(Arrays.asList(participants));
                     users.add(username);
-                    ContextListener.cm.addNewChat(chatName, users).doAction(item -> msg.put("message", chatName + " chat has been created"), exp -> msg.put("error", exp));
+                    UsersCommunication.addNewChat(chatName, users).doAction(item -> msg.put("message", chatName + " chat has been created"), exp -> msg.put("error", exp));
                     json = gson.toJson(msg);
                 }
                 else if (participants == null || participants[0].equals(""))
@@ -83,7 +84,7 @@ public class ChatUtil extends HttpServlet {
                     System.out.println(json);
                 break;
             case "new_message":  // add message to a chat
-                ContextListener.cm.addToExistingChat(chatName, username, message).ifFailure(exp -> msg.put("error", exp));
+                UsersCommunication.addToExistingChat(chatName, username, message).ifFailure(exp -> msg.put("error", exp));
                 break;
             default:
                 msg.put("error", "There is no option " + action);

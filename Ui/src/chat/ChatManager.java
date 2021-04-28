@@ -9,18 +9,11 @@ import objects.interfaces.CommandAnswer;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ChatManager {   // Singleton of UserManager
-    private final Map<String, ChatRoom> chat;
-    private static ChatManager manager = null;
+public enum ChatManager {   // Singleton of UserManager
+    Instance;
 
-    private ChatManager() { chat = new HashMap<>(); }
+    private final Map<String, ChatRoom> chat = new HashMap<>();
 
-    public static ChatManager getManager() {
-        /* as a Singleton there is only one instance. return the instance of this class */
-        if (manager == null)
-            manager = new ChatManager();
-        return manager;
-    }
 
     public Set<String> getRooms(String username) {
         /* return a set of names of the active rooms */
@@ -74,7 +67,8 @@ public class ChatManager {   // Singleton of UserManager
         List<String> names = new ArrayList<>();
         AtomicBoolean found = new AtomicBoolean(true);
         participants.forEach( u -> {
-            if (!ContextListener.um.checkUser(u)) {
+            // if (!ContextListener.um.checkUser(u)) {
+            if (!UserManager.Instance.checkUser(u)) {
                 found.set(false);
                 names.add(u);
             }
@@ -89,7 +83,8 @@ public class ChatManager {   // Singleton of UserManager
         /* add new message to an existing room, return CommandAnswer if there is an exception */
         if (!this.chat.containsKey(chatName))
             return new AnswerDto<>(null, "There is no chat room with the name " + chatName, ExpType.ChatNotFound);
-        if (!ContextListener.um.checkUser(username))
+        // if (!ContextListener.um.checkUser(username))
+        if (!UserManager.Instance.checkUser(username))
             return new AnswerDto<>(null, "There is no user with the username " + username, ExpType.UserNotFound);
 
         this.chat.get(chatName).addMessage(username, message);

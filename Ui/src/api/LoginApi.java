@@ -1,5 +1,6 @@
 package api;
 
+import chat.UsersCommunication;
 import com.google.gson.Gson;
 import com.web.Authentication;
 import com.web.ContextListener;
@@ -37,7 +38,7 @@ public class LoginApi extends HttpServlet {
             boolean userType = !request.getParameter("userType").equals("Admin");
             if (ContextListener.DEBUG)
                 System.out.println("username: " + username + " || kind: " + userType);
-            if (ContextListener.um.checkUser(username)) {
+            if (UsersCommunication.checkUser(username)) {
                 msg.put("error", "There is a username with the name: " + username + " please pick another username");
                 if (ContextListener.DEBUG)
                     System.out.println("error " + "There is a username with the name: " + username + " please pick another username");
@@ -51,8 +52,7 @@ public class LoginApi extends HttpServlet {
                     request.getSession(true).setAttribute("username", username);  // base64 encoding
                     msg.put("key", getApiKey());
                     msg.put("message", "you have entered the system");
-                    ContextListener.um.addUser(username, userType ? "Stock Broker" : "Admin");  // userType
-                    ContextListener.cm.addUserToChat("Everyone", username);
+                    UsersCommunication.addUser(username, userType);
                 }
             }
         } else {

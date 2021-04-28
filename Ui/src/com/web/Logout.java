@@ -1,5 +1,6 @@
 package com.web;
 
+import chat.UsersCommunication;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -17,17 +18,15 @@ public class Logout extends HttpServlet {
             System.out.println("req: " + request.getSession().getAttribute("username"));
         }
         Gson gson = new Gson();
+        String username;
         if (request.getSession().getAttribute("username") != null) {
             if (ContextListener.DEBUG)
                 System.out.println("logout -> " + Authentication.getUsernameSession(request));
-            ContextListener.um.removeUser(Authentication.getUsernameSession(request));
-            ContextListener.cm.removeUserFromAllChats(Authentication.getUsernameSession(request));
+            username = Authentication.getUsernameSession(request);
             Authentication.clearSession(request);
-        } else {
-            String username = gson.fromJson(request.getParameter("username"), String.class);
-            ContextListener.um.removeUser(username);
-            ContextListener.cm.removeUserFromAllChats(username);
-        }
+        } else
+            username = gson.fromJson(request.getParameter("username"), String.class);
+        UsersCommunication.logoutAction(username);
         response.sendRedirect(request.getContextPath() + "/index.html");
     }
 

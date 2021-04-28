@@ -1,5 +1,6 @@
 package com.web;
 
+import chat.UsersCommunication;
 import com.google.gson.Gson;
 
 import javax.servlet.annotation.WebServlet;
@@ -35,7 +36,7 @@ public class Authentication extends HttpServlet {
 
             if (ContextListener.DEBUG)
                 System.out.println("username: " + username + " || kind: " + userType);
-            if (ContextListener.um.checkUser(username)) {
+            if (UsersCommunication.chatCheck(username)) {
                 msg.put("error", "There is a username with the name: " + username + " please pick another username");
                 if (ContextListener.DEBUG)
                     System.out.println("error " + "There is a username with the name: " + username + " please pick another username");
@@ -46,8 +47,7 @@ public class Authentication extends HttpServlet {
                         ContextListener.rse.addUser(username, userType);
                     request.getSession(true).setAttribute("username", username);  // base64 encoding
                     msg.put("url", "/stocks");
-                    ContextListener.um.addUser(username, userType ? "Stock Broker" : "Admin");  // userType
-                    ContextListener.cm.addUserToChat("Everyone", username);
+                    UsersCommunication.addUser(username, userType);
                 }
             }
         } else
